@@ -11,22 +11,6 @@ jobs:
         include:
         - android_version: "android12"
           kernel_version: "5.10"
-          sub_level: "198"
-          os_patch_level: "2024-01"
-        - android_version: "android12"
-          kernel_version: "5.10"
-          sub_level: "205"
-          os_patch_level: "2024-03"
-        - android_version: "android12"
-          kernel_version: "5.10"
-          sub_level: "209"
-          os_patch_level: "2024-05"
-        - android_version: "android12"
-          kernel_version: "5.10"
-          sub_level: "218"
-          os_patch_level: "2024-08"
-        - android_version: "android12"
-          kernel_version: "5.10"
           sub_level: "226"
           os_patch_level: "2024-11"
         - android_version: "android12"
@@ -134,8 +118,7 @@ jobs:
           cd "$CONFIG"
           
           echo "Adding KernelSU..."
-          curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -
-
+          curl -LSs "https://raw.githubusercontent.com/rifsxd/KernelSU-Next/next/kernel/setup.sh" | bash -s next
       - name: Apply SUSFS Patches
         run: |
           echo "Changing to configuration directory: $CONFIG..."
@@ -218,7 +201,7 @@ jobs:
           # Run sed commands for modifications
           sed -i 's/check_defconfig//' ./common/build.config.gki
           sed -i 's/-dirty//' ./common/scripts/setlocalversion
-          sed -i '$s|echo "\$res"|echo "\$res-Wild+"|' ./common/scripts/setlocalversion
+          sed -i '$s|echo "\$res"|echo "-ANDROID12-GKI-EdogawaX"|' ./common/scripts/setlocalversion
           
           # Run perl command to modify UTS_VERSION
           perl -pi -e 's{UTS_VERSION="\$\(echo \$UTS_VERSION \$CONFIG_FLAGS \$TIMESTAMP \| cut -b -\$UTS_LEN\)"}{UTS_VERSION="#1 SMP PREEMPT Sat Apr 20 04:20:00 UTC 2024"}' ./common/scripts/mkcompile_h
